@@ -1,0 +1,98 @@
+C51 COMPILER V9.54   MATRIXKEYBOARD                                                        02/07/2024 17:13:34 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MATRIXKEYBOARD
+OBJECT MODULE PLACED IN .\Objects\MatrixKeyboard.obj
+COMPILER INVOKED BY: D:\KEILC51\C51\BIN\C51.EXE MatrixKeyboard.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT
+                    -(.\Listings\MatrixKeyboard.lst) TABS(2) OBJECT(.\Objects\MatrixKeyboard.obj)
+
+line level    source
+
+   1          #include "project.h"
+   2          
+   3          extern u8 FLAG;
+   4          
+   5          u8 Matrix_Key_scan()
+   6          {
+   7   1        u8 key_value=0;
+   8   1        
+   9   1        {
+  10   2        P1=0xf7;          //扫描第一列
+  11   2        if(P1!=0xf7)      //第一列有按键被按下
+  12   2        {
+  13   3          Delay(10);
+  14   3          switch(P1)
+  15   3          {
+  16   4            case 0x77:key_value=1;break;
+  17   4            case 0xb7:key_value=5;break;
+  18   4            case 0xd7:key_value=9;break;
+  19   4            case 0xe7:key_value=13;break;
+  20   4          } 
+  21   3        }
+  22   2        while(P1!=0xf7);  //等待按键松开
+  23   2      
+  24   2        P1=0xfb;          //扫描第二列
+  25   2        if(P1!=0xfb)      //第二列有按键被按下
+  26   2        {
+  27   3          Delay(10);
+  28   3          switch(P1)
+  29   3          {
+  30   4            case 0x7b:key_value=2;break;
+  31   4            case 0xbb:key_value=6;break;
+  32   4            case 0xdb:key_value=10;break;      
+  33   4            case 0xeb:key_value=14;break;
+  34   4          } 
+  35   3        }
+  36   2        while(P1!=0xfb);  //等待按键松开
+  37   2      
+  38   2        P1=0xfd;          //扫描第三列
+  39   2        if(P1!=0xfd)      //第三列有按键被按下
+  40   2        {
+  41   3          Delay(10);
+  42   3          switch(P1)
+  43   3          {
+  44   4            case 0x7d:key_value=3;break;
+  45   4            case 0xbd:key_value=7;break;
+  46   4            case 0xdd:key_value=11;break;
+  47   4            case 0xed:key_value=15;break;
+  48   4          } 
+  49   3        }
+  50   2        while(P1!=0xfd);  //等待按键松开
+  51   2      
+  52   2        P1=0xfe;          //扫描第四列
+  53   2        if(P1!=0xfe)      //第四列有按键被按下
+  54   2        {
+C51 COMPILER V9.54   MATRIXKEYBOARD                                                        02/07/2024 17:13:34 PAGE 2   
+
+  55   3          Delay(10);
+  56   3          switch(P1)
+  57   3          {
+  58   4            case 0x7e:key_value=4;break;
+  59   4            case 0xbe:key_value=8;break;
+  60   4            case 0xde:key_value=12;break;
+  61   4            case 0xee:key_value=16;break;
+  62   4          } 
+  63   3        }
+  64   2        while(P1!=0xfe);  //等待按键松开
+  65   2        }
+  66   1        
+  67   1        
+  68   1        if(key_value>=1&&key_value<=10)  
+  69   1          FLAG=1;
+  70   1        
+  71   1        return key_value;  //返回键入的键盘值
+  72   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    308    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----       1
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

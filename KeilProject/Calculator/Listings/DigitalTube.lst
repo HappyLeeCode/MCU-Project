@@ -1,0 +1,62 @@
+C51 COMPILER V9.54   DIGITALTUBE                                                           02/07/2024 17:13:34 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE DIGITALTUBE
+OBJECT MODULE PLACED IN .\Objects\DigitalTube.obj
+COMPILER INVOKED BY: D:\KEILC51\C51\BIN\C51.EXE DigitalTube.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\
+                    -Listings\DigitalTube.lst) TABS(2) OBJECT(.\Objects\DigitalTube.obj)
+
+line level    source
+
+   1          #include "project.h"
+   2          
+   3          u8 ERROR[8]={22,14,20,20,0,20,22,22};
+   4          u8 HELLO[8]={22,22,16,14,19,19,0,22};
+   5          
+   6          
+   7          void DigitalTube(u8 Location,u8 number)
+   8          {
+   9   1        
+  10   1        //数码管显示字符
+  11   1        u8 CharTable[]=
+  12   1        {
+  13   1            0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x6F,    //0-9
+  14   1            0x77,0x7C,0x39,0x5E,0x79,0x71,                        //A(10)  B(11)  C(12)  D(13)  E(14)  F(15) 
+  15   1            0x76,0x6E,0x38,0x3E,0x72,0x70,                        //H(16)  Y      L      U      R      -(负号) 
+  16   1            0x00,0x7C,0x7B                                                  //空(22)
+  17   1        };
+  18   1      
+  19   1        //位选：选择几号数码管
+  20   1        switch(Location)
+  21   1        {
+  22   2          case 1: LSC=1; LSB=1; LSA=1; break;
+  23   2          case 2: LSC=1; LSB=1; LSA=0; break;
+  24   2          case 3: LSC=1; LSB=0; LSA=1; break;
+  25   2          case 4: LSC=1; LSB=0; LSA=0; break;
+  26   2          case 5: LSC=0; LSB=1; LSA=1; break;
+  27   2          case 6: LSC=0; LSB=1; LSA=0; break;
+  28   2          case 7: LSC=0; LSB=0; LSA=1; break;
+  29   2          case 8: LSC=0; LSB=0; LSA=0; break;
+  30   2        }
+  31   1        
+  32   1        //段选：送字符显示
+  33   1        DIGITAL_PORT = CharTable[number];   
+  34   1        
+  35   1        Delay(1);                           //稳定显示字符
+  36   1        DIGITAL_PORT = 0x00;                //消影
+  37   1        
+  38   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    148    ----
+   CONSTANT SIZE    =     25    ----
+   XDATA SIZE       =     16      27
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

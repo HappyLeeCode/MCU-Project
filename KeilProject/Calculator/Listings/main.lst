@@ -1,0 +1,60 @@
+C51 COMPILER V9.54   MAIN                                                                  02/07/2024 17:13:34 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\KEILC51\C51\BIN\C51.EXE main.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listing
+                    -s\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include "project.h"
+   2          
+   3          u8 FLAG=0;
+   4          u8 SLOT=0;
+   5          u8 Box[8]={0};
+   6          u16 Result=0,Temp=0;
+   7          u8 KeyValue=0;
+   8          u8 StudentID[8]={5,1,1,1,6,3,9,2};
+   9          
+  10          extern u8 ERROR[8];
+  11          extern u8 HELLO[8];
+  12          
+  13          
+  14          void main()
+  15          {
+  16   1        RCK = 0;
+  17   1        SCK = 0;
+  18   1        _74HC595_WriteByte(0x00);
+  19   1        Tips(0,3);
+  20   1        while(1)
+  21   1        {   
+  22   2          DisplayL_R(StudentID);
+  23   2          while(KEY1==0)
+  24   2          {
+  25   3            Delay(10);
+  26   3            while(KEY1==0);
+  27   3            Delay(10);
+  28   3            LEDflow(1,300);
+  29   3            Calculate();
+  30   3            if(KEY2==0)
+  31   3            {
+  32   4            Tips(1,3);
+  33   4            }
+  34   3          }
+  35   2        }
+  36   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     78    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =     23    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

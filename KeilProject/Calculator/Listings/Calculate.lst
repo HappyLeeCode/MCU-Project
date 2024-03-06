@@ -1,0 +1,231 @@
+C51 COMPILER V9.54   CALCULATE                                                             02/07/2024 17:13:35 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE CALCULATE
+OBJECT MODULE PLACED IN .\Objects\Calculate.obj
+COMPILER INVOKED BY: D:\KEILC51\C51\BIN\C51.EXE Calculate.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Li
+                    -stings\Calculate.lst) TABS(2) OBJECT(.\Objects\Calculate.obj)
+
+line level    source
+
+   1          #include "project.h"
+   2          
+   3          extern u8 FLAG;
+   4          extern u8 SLOT;
+   5          extern u8 Box[8];
+   6          extern u16 Result,Temp;
+   7          extern u8 KeyValue;
+   8          
+   9          extern u8 ERROR[8];
+  10          
+  11          u16 ArryValue(const u8 Box[])
+  12          {
+  13   1        u16 i=0,j=0;
+  14   1        u16 sum=0;
+  15   1        for(i=0;i<8;i++)
+  16   1        {
+  17   2          u16 weight=1;
+  18   2          for(j=0;j<i;j++)
+  19   2          {
+  20   3            weight*=10;
+  21   3          }   
+  22   2          sum+=Box[i]*weight;
+  23   2        }
+  24   1        return sum;
+  25   1      }
+  26          
+  27          void ArryCreate(const u16 Result,u8 Box[])
+  28          {
+  29   1        u16 i=0,j=0;
+  30   1        for(i=0;i<8;i++)
+  31   1        {
+  32   2          u16 weight=1;
+  33   2          for(j=0;j<i;j++)
+  34   2          {
+  35   3            weight*=10;
+  36   3          }   
+  37   2          Box[i]=Result/weight%10;
+  38   2        } 
+  39   1          //Box[0]=Result%10;                 
+  40   1          //Box[1]=Result/10%10;
+  41   1          //Box[2]=Result/100%10;
+  42   1          //Box[3]=Result/1000%10;
+  43   1          //Box[4]=Result/10000%10;
+  44   1          //Box[5]=Result/100000%10;
+  45   1          //Box[6]=Result/1000000%10;
+  46   1          //Box[7]=Result/10000000%10;  
+  47   1      }
+  48          
+  49          void ArryClear(u8 Box[])
+  50          {
+  51   1        u16 i=0;
+  52   1        for(i=0;i<8;i++)
+  53   1           Box[i]=0;  
+  54   1      }
+C51 COMPILER V9.54   CALCULATE                                                             02/07/2024 17:13:35 PAGE 2   
+
+  55          
+  56          
+  57          
+  58          void CheckInput()
+  59          {
+  60   1        while(SLOT==4&&Temp==0)
+  61   1        {
+  62   2          DisplayL_R(ERROR);
+  63   2          KeyValue=Matrix_Key_scan();
+  64   2          if(KeyValue==16)
+  65   2              break;
+  66   2        }
+  67   1      }
+  68          
+  69          void CheckOutput()
+  70          {
+  71   1        while(Result<Temp)
+  72   1        {
+  73   2          DisplayL_R(ERROR);
+  74   2          KeyValue=Matrix_Key_scan();
+  75   2          if(KeyValue==16)
+  76   2          {     Result=0;
+  77   3                Temp=0;
+  78   3                FLAG=0;
+  79   3                SLOT=0;
+  80   3              break;
+  81   3          }
+  82   2        }
+  83   1      }
+  84          
+  85          
+  86          
+  87          //void CheckResult()
+  88          //{
+  89          //  
+  90          //  
+  91          //}
+  92          void Operate(u8 SLOT)
+  93          {
+  94   1        switch(SLOT)
+  95   1        {
+  96   2          case 0: Result=Temp; break;      
+  97   2          case 1: Result=Result+Temp; break;
+  98   2          case 2: CheckOutput();Result=Result-Temp; break;
+  99   2          case 3: Result=Result*Temp; break;
+ 100   2          case 4: Result=Result/Temp; break;
+ 101   2        }
+ 102   1        Temp=0;
+ 103   1      }
+ 104          
+ 105          void Calculate()
+ 106          {
+ 107   1      
+ 108   1        u8 i=0;
+ 109   1        while(1)
+ 110   1        {
+ 111   2          if(KEY2==0)
+ 112   2            break;
+ 113   2          
+ 114   2          DisplayR_L(Box);
+ 115   2          KeyValue=Matrix_Key_scan();
+ 116   2      
+C51 COMPILER V9.54   CALCULATE                                                             02/07/2024 17:13:35 PAGE 3   
+
+ 117   2          if(KeyValue!=0)
+ 118   2          {
+ 119   3            beep(KeyValue);
+ 120   3            if(FLAG==1)  
+ 121   3            {
+ 122   4              for(i=7;i>0;i--)          
+ 123   4              {
+ 124   5                Box[i]=Box[i-1];
+ 125   5              }
+ 126   4              if(KeyValue==10)
+ 127   4                KeyValue=0;
+ 128   4              else;
+ 129   4              Box[0]=KeyValue; 
+ 130   4              
+ 131   4              Temp=ArryValue(Box);
+ 132   4              
+ 133   4              CheckInput();
+ 134   4              FLAG=0;
+ 135   4            }
+ 136   3            
+ 137   3            
+ 138   3            else
+ 139   3            {
+ 140   4              if(KeyValue==16)
+ 141   4              {
+ 142   5                ArryClear(Box);           
+ 143   5                DisplayR_L(Box);
+ 144   5                Result=0;
+ 145   5                Temp=0;
+ 146   5                FLAG=0;
+ 147   5                SLOT=0;
+ 148   5              }
+ 149   4                      
+ 150   4              else if(KeyValue==15)
+ 151   4              {
+ 152   5                Operate(SLOT);
+ 153   5                ArryCreate(Result,Box);
+ 154   5                Temp=ArryValue(Box);
+ 155   5                DisplayR_L(Box);
+ 156   5                SLOT=0;
+ 157   5              } 
+ 158   4              
+ 159   4              else    //此时，KeyValue=11~14，依次对应为+、-、x、/操作
+ 160   4              {
+ 161   5                Operate(SLOT);
+ 162   5                ArryClear(Box);
+ 163   5                DisplayR_L(Box);
+ 164   5                SLOT=KeyValue%10; 
+ 165   5              }
+ 166   4              
+ 167   4              DisplayOperate();
+ 168   4      
+ 169   4      
+ 170   4      //        else if(KeyValue==11)
+ 171   4      //        {
+ 172   4      //          Operate(SLOT);
+ 173   4      //          ArryClear(Box);
+ 174   4      //          DisplayR_L(Box);
+ 175   4      //          SLOT=1;
+ 176   4      //        }     
+ 177   4      //        else if(KeyValue==12)
+ 178   4      //        {
+C51 COMPILER V9.54   CALCULATE                                                             02/07/2024 17:13:35 PAGE 4   
+
+ 179   4      //          Operate(SLOT);
+ 180   4      //          ArryClear(Box);
+ 181   4      //          DisplayR_L(Box);
+ 182   4      //          SLOT=2;
+ 183   4      //        }     
+ 184   4      //        else if(KeyValue==13)
+ 185   4      //        {
+ 186   4      //          Operate(SLOT);
+ 187   4      //          ArryClear(Box);
+ 188   4      //          DisplayR_L(Box);
+ 189   4      //          SLOT=3;
+ 190   4      //        }       
+ 191   4      //        else if(KeyValue==14)
+ 192   4      //        {
+ 193   4      //          Operate(SLOT);
+ 194   4      //          ArryClear(Box);
+ 195   4      //          DisplayR_L(Box);
+ 196   4      //          SLOT=4;
+ 197   4      //        }
+ 198   4            }
+ 199   3          } 
+ 200   2        }
+ 201   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    936    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----      26
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

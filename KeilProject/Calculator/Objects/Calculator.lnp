@@ -1,0 +1,10 @@
+".\Objects\main.obj",
+".\Objects\DigitalTube.obj",
+".\Objects\MatrixKeyboard.obj",
+".\Objects\Function.obj",
+".\Objects\Calculate.obj",
+".\Objects\LedDotScreen.obj",
+".\Objects\LedLight.obj",
+".\Objects\Beep.obj" 
+TO ".\Objects\Calculator" 
+PRINT(".\Listings\Calculator.m51") RAMSIZE(256) 
